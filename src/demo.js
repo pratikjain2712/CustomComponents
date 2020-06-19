@@ -11,9 +11,13 @@ const useStyles = makeStyles({
 });
 
 function valuetext(value) {
-  return `${value}°C`;
+  const customDateFormat = {
+    year: "numeric",
+    month: "short",
+    day: "numeric"
+  };
+  return new Date(value).toLocaleDateString("en-us", customDateFormat);
 }
-
 export default function RangeSlider() {
   const classes = useStyles();
   const min = new Date("2013-05-13").getTime();
@@ -23,19 +27,14 @@ export default function RangeSlider() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const customDateFormat = {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  };
   const marks = [
     {
       value: min,
-      label: new Date(min).toLocaleDateString("en-us", customDateFormat)
+      label: valuetext(min)
     },
     {
       value: max,
-      label: new Date(max).toLocaleDateString("en-us", customDateFormat)
+      label: valuetext(max)
     }
   ];
   function ValueLabelComponent(props) {
@@ -46,7 +45,7 @@ export default function RangeSlider() {
         open={open}
         enterTouchDelay={0}
         placement="top"
-        title={new Date(value).toLocaleDateString("en-us", customDateFormat)}
+        title={valuetext(value)}
       >
         {children}
       </Tooltip>
